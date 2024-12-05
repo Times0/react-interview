@@ -42,10 +42,19 @@ function App() {
   });
 
   return (
-    <>
-      <h1 className="text-3xl font-bold">Tree View</h1>
-      <TreeView data={data} />
-    </>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="w-full bg-white p-4 mb-4">
+        <h1 className="text-3xl font-bold">Yelhow</h1>
+      </div>
+      <div className="flex gap-4 px-4 flex-grow">
+        <div className="w-3/4 p-4 bg-white rounded-lg shadow flex-grow">
+          {/* Placeholder for left side content */}
+        </div>
+        <div className="w-1/4 p-4 bg-white rounded-lg shadow flex-grow">
+          <TreeView data={data} />
+        </div>
+      </div>
+    </div>
   );
 }
 
