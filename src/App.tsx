@@ -1,71 +1,54 @@
-import { useState } from "react";
 import "./index.css";
 import { Data, TreeView } from "./TreeView";
+import { faker } from "@faker-js/faker";
 
-// create a function to create data
-function createData(): Data {
+interface CreateDataOptions {
+  regionsCount?: number;
+  sitesPerRegion?: number;
+  activitiesPerSite?: number;
+  workstationsPerActivity?: number;
+}
+
+function createData(
+  options: CreateDataOptions = {
+    regionsCount: 2,
+    sitesPerRegion: 2,
+    activitiesPerSite: 2,
+    workstationsPerActivity: 3,
+  }
+): Data {
+  const createWorkstations = (count: number) => {
+    return Array.from({ length: count }, () => ({
+      name: `${faker.commerce.department()} Station ${faker.number.int(999)}`,
+    }));
+  };
+
   return {
-    regions: [
-      {
-        name: "North America",
-        sites: [
-          {
-            name: "New York",
-            activities: [
-              {
-                name: "Manufacturing",
-                workstations: [
-                  { name: "Assembly Line 1" },
-                  { name: "Assembly Line 2" },
-                  { name: "Quality Control" },
-                ],
-              },
-              {
-                name: "Packaging",
-                workstations: [
-                  { name: "Boxing Station" },
-                  { name: "Labeling Station" },
-                ],
-              },
-            ],
-          },
-          {
-            name: "Los Angeles",
-            activities: [
-              {
-                name: "Research",
-                workstations: [
-                  { name: "Lab Station 1" },
-                  { name: "Lab Station 2" },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: "Europe",
-        sites: [
-          {
-            name: "London",
-            activities: [
-              {
-                name: "Distribution",
-                workstations: [
-                  { name: "Loading Dock A" },
-                  { name: "Loading Dock B" },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    regions: Array.from({ length: options.regionsCount ?? 2 }, () => ({
+      name: faker.location.continent(),
+      sites: Array.from({ length: options.sitesPerRegion ?? 2 }, () => ({
+        name: faker.location.city(),
+        activities: Array.from(
+          { length: options.activitiesPerSite ?? 2 },
+          () => ({
+            name: faker.commerce.department(),
+            workstations: createWorkstations(
+              options.workstationsPerActivity ?? 3
+            ),
+          })
+        ),
+      })),
+    })),
   };
 }
 
 function App() {
-  const data: Data = createData();
+  const data: Data = createData({
+    regionsCount: 5,
+    sitesPerRegion: 2,
+    activitiesPerSite: 2,
+    workstationsPerActivity: 4,
+  });
 
   return (
     <>

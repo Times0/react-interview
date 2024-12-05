@@ -25,17 +25,21 @@ interface ExpandableItemProps {
   isExpandable?: boolean;
 }
 
-const ExpandableItem = ({ name, children, isExpandable = true }: ExpandableItemProps) => {
+const ExpandableItem = ({
+  name,
+  children,
+  isExpandable = true,
+}: ExpandableItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="ml-4">
-      <div 
-        className="flex items-center cursor-pointer" 
+    <div className="ml-12">
+      <div
+        className="flex items-center cursor-pointer"
         onClick={() => isExpandable && setIsExpanded(!isExpanded)}
       >
         {isExpandable && (
-          <span className="mr-2 font-mono">{isExpanded ? '-' : '+'}</span>
+          <span className="mr-2 font-mono">{isExpanded ? "-" : "+"}</span>
         )}
         <span>{name}</span>
       </div>
@@ -52,14 +56,19 @@ export const TreeView = ({ data }: TreeViewProps) => {
           {region.sites.map((site, siteIndex) => (
             <ExpandableItem key={`site-${siteIndex}`} name={site.name}>
               {site.activities.map((activity, activityIndex) => (
-                <ExpandableItem key={`activity-${activityIndex}`} name={activity.name}>
-                  {activity.workstations.map((workstation, workstationIndex) => (
-                    <ExpandableItem 
-                      key={`workstation-${workstationIndex}`}
-                      name={workstation.name}
-                      isExpandable={false}
-                    />
-                  ))}
+                <ExpandableItem
+                  key={`activity-${activityIndex}`}
+                  name={activity.name}
+                >
+                  {activity.workstations.map(
+                    (workstation, workstationIndex) => (
+                      <ExpandableItem
+                        key={`workstation-${workstationIndex}`}
+                        name={workstation.name}
+                        isExpandable={false}
+                      />
+                    )
+                  )}
                 </ExpandableItem>
               ))}
             </ExpandableItem>
