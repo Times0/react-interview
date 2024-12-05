@@ -1,5 +1,5 @@
 import "./index.css";
-import { Data, TreeView } from "./TreeView";
+import { TreeView } from "./TreeView";
 import { faker } from "@faker-js/faker";
 
 interface CreateDataOptions {
@@ -9,34 +9,25 @@ interface CreateDataOptions {
   workstationsPerActivity?: number;
 }
 
-function createData(
-  options: CreateDataOptions = {
-    regionsCount: 2,
-    sitesPerRegion: 2,
-    activitiesPerSite: 2,
-    workstationsPerActivity: 3,
-  }
-): Data {
-  const createWorkstations = (count: number) => {
-    return Array.from({ length: count }, () => ({
-      name: `${faker.commerce.department()} Station ${faker.number.int(999)}`,
-    }));
-  };
-
+function createData({
+  regionsCount = 2,
+  sitesPerRegion = 2,
+  activitiesPerSite = 2,
+  workstationsPerActivity = 3,
+}: CreateDataOptions = {}): Data {
   return {
-    regions: Array.from({ length: options.regionsCount ?? 2 }, () => ({
+    regions: Array.from({ length: regionsCount }, () => ({
       name: faker.location.continent(),
-      sites: Array.from({ length: options.sitesPerRegion ?? 2 }, () => ({
+      sites: Array.from({ length: sitesPerRegion }, () => ({
         name: faker.location.city(),
-        activities: Array.from(
-          { length: options.activitiesPerSite ?? 2 },
-          () => ({
-            name: faker.commerce.department(),
-            workstations: createWorkstations(
-              options.workstationsPerActivity ?? 3
-            ),
-          })
-        ),
+        activities: Array.from({ length: activitiesPerSite }, () => ({
+          name: faker.commerce.department(),
+          workstations: Array.from({ length: workstationsPerActivity }, () => ({
+            name: `${faker.commerce.department()} Station ${faker.number.int(
+              999
+            )}`,
+          })),
+        })),
       })),
     })),
   };

@@ -1,30 +1,10 @@
 import { useState } from "react";
 
-export interface Data {
-  regions: {
-    name: string;
-    sites: {
-      name: string;
-      activities: {
-        name: string;
-        workstations: {
-          name: string;
-        }[];
-      }[];
-    }[];
-  }[];
-}
-
-interface TreeViewProps {
-  data: Data;
-}
-
 interface ExpandableItemProps {
   name: string;
   children?: React.ReactNode;
   isExpandable?: boolean;
 }
-
 const ExpandableItem = ({
   name,
   children,
@@ -48,6 +28,9 @@ const ExpandableItem = ({
   );
 };
 
+interface TreeViewProps {
+  data: Data;
+}
 export const TreeView = ({ data }: TreeViewProps) => {
   return (
     <div className="p-4">
